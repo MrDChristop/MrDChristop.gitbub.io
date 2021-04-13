@@ -1,7 +1,7 @@
 import * as THREE from '../../build/three.module.js';
 import { VRButton } from '../jsm/webxr/VRButton.js';
 import { BoxLineGeometry } from '../jsm/geometries/BoxLineGeometry.js';
-//import { Stats } from '../../libs/stats.module.js';
+import { Stats } from './stats.module.js';
 import { OrbitControls } from '../jsm/controls/OrbitControls.js';
 
 
@@ -35,8 +35,8 @@ class App{
         this.controls.target.set(0, 1.6, 0);
         this.controls.update();
         
-        //this.stats = new Stats();
-        //container.appendChild( this.stats.dom );
+        this.stats = new Stats();
+        container.appendChild( this.stats.dom );
         
         this.initScene();
         this.setupVR();
@@ -87,7 +87,7 @@ class App{
     }
     
 	render( ) {   
-        //this.stats.update();
+        this.stats.update();
         
         this.renderer.render( this.scene, this.camera );
     }
