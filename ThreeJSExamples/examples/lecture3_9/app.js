@@ -1,5 +1,5 @@
 import * as THREE from '../../build/three.module.js';
-import { VRButton } from '../jsm/webxr/ARButton.js';
+import { ARButton } from '../jsm/webxr/ARButton.js';
 import { BoxLineGeometry } from '../jsm/geometries/BoxLineGeometry.js';
 import { Stats } from './stats.module.js';
 import { OrbitControls } from '../jsm/controls/OrbitControls.js';
