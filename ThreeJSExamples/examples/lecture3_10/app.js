@@ -22,6 +22,7 @@ class App{
 		this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 20 );
 		
 		this.scene = new THREE.Scene();
+        this.scene.background = new THREE.Color('skyblue');
         
         this.scene.add ( this.camera );
        
@@ -138,12 +139,14 @@ class App{
         
         function onSessionEnd(){
             self.camera.remove( self.ui.mesh );
+            document.body.style.display="";
         }
         
         this.renderer.xr.addEventListener( 'sessionstart', onSessionStart );
         this.renderer.xr.addEventListener( 'sessionend', onSessionEnd );
 
         document.body.appendChild(ARButton.createButton(this.renderer, { optionalFeatures: [ 'dom-overlay' ], domOverlay: { root: document.body } }));
+        //document.body.appendChild(ARButton.createButton(this.renderer));
         
         
         const controller = this.renderer.xr.getController( 0 );
