@@ -60,9 +60,8 @@ class App{
             self.scene.add( mesh );
             self.meshes.push( mesh );
         }
-
-        const btn = new ARButton(this.renderer);
-        document.body.appendChild(btn);
+        
+        document.body.appendChild(ARButton.createButton(this.renderer));
         
         controller = this.renderer.xr.getController(0);
         controller.addEventListener('select', onSelect);
