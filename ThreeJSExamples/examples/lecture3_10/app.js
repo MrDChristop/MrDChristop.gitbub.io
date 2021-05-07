@@ -139,7 +139,7 @@ class App{
         
         function onSessionEnd(){
             self.camera.remove( self.ui.mesh );
-            document.body.style.display="";
+            //document.body.style.display="";
         }
         
         this.renderer.xr.addEventListener( 'sessionstart', onSessionStart );
