@@ -131,15 +131,22 @@ class App{
                 } );
             }
         }
+        this.added = false;
         
         function onSessionStart(){
+            if (!self.added) {
             self.ui.mesh.position.set( 0, -0.5, -1.1 );
             self.camera.add( self.ui.mesh );
+            self.added = true;
+            }
         }
         
         function onSessionEnd(){
+            if (self.added) {
             self.camera.remove( self.ui.mesh );
+            self.added = false;
             document.body.style.display="";
+            }
         }
         
         this.renderer.xr.addEventListener( 'sessionstart', onSessionStart );
