@@ -114,7 +114,7 @@ class App{
     createUI() {
         
         const config = {
-            panelSize: { width: 0.15, height: 0.038 },
+            panelSize: { width: 0.6, height: 0.3 },
             height: 128,
             info:{ type: "text" }
         }
@@ -134,7 +134,7 @@ class App{
         let controller, controller1;
         
         function onSessionStart(){
-            self.ui.mesh.position.set( 0, 0.2, -1.1 );
+            self.ui.mesh.position.set( 0, 0.3, -1.1 );
             self.camera.add( self.ui.mesh );
         }
         
@@ -144,7 +144,8 @@ class App{
         
         this.renderer.xr.addEventListener( 'sessionstart', onSessionStart );
         this.renderer.xr.addEventListener( 'sessionend', onSessionEnd );
-        document.body.appendChild(ARButton.createButton(this.renderer));
+        document.body.appendChild(ARButton.createButton(this.renderer, { optionalFeatures: [ 'dom-overlay' ], domOverlay: { root: document.body } }));
+        //document.body.appendChild(ARButton.createButton(this.renderer));
         
         this.gestures = new ControllerGestures( this.renderer );
         this.gestures.addEventListener( 'tap', (ev)=>{
