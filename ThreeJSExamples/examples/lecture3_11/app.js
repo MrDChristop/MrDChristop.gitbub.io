@@ -137,18 +137,17 @@ class App{
         function onSessionStart(){
             self.ui.mesh.position.set( 0, 0.3, -1.1 );
             self.camera.add( self.ui.mesh );
-            document.body.style.display="";
         }
         
         function onSessionEnd(){
             self.camera.remove( self.ui.mesh );
-            document.body.style.display="";
+            //document.body.style.display="";
         }
         
         this.renderer.xr.addEventListener( 'sessionstart', onSessionStart );
         this.renderer.xr.addEventListener( 'sessionend', onSessionEnd );
-        document.body.appendChild(ARButton.createButton(this.renderer, { optionalFeatures: [ 'dom-overlay' ], domOverlay: { root: document.body } }));
-        //document.body.appendChild(ARButton.createButton(this.renderer));
+        //document.body.appendChild(ARButton.createButton(this.renderer, { optionalFeatures: [ 'dom-overlay' ], domOverlay: { root: document.body } }));
+        document.body.appendChild(ARButton.createButton(this.renderer));
         
         this.gestures = new ControllerGestures( this.renderer );
         this.gestures.addEventListener( 'tap', (ev)=>{
