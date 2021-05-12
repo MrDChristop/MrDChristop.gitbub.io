@@ -145,7 +145,7 @@ class App{
             if (self.added) {
             self.camera.remove( self.ui.mesh );
             self.added = false;
-            //document.body.style.display="";
+            document.body.style.display="";
             }
         }
         
