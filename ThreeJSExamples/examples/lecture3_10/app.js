@@ -152,8 +152,8 @@ class App{
         this.renderer.xr.addEventListener( 'sessionstart', onSessionStart );
         this.renderer.xr.addEventListener( 'sessionend', onSessionEnd );
 
-        //document.body.appendChild(ARButton.createButton(this.renderer, { optionalFeatures: [ 'dom-overlay' ], domOverlay: { root: document.body } }));
-        document.body.appendChild(ARButton.createButton(this.renderer));
+        document.body.appendChild(ARButton.createButton(this.renderer, { optionalFeatures: [ 'dom-overlay' ], domOverlay: { root: document.body } }));
+        //document.body.appendChild(ARButton.createButton(this.renderer));
         
         
         const controller = this.renderer.xr.getController( 0 );
