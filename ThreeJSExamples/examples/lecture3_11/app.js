@@ -17,7 +17,7 @@ class App{
         
         this.clock = new THREE.Clock();
         
-		this.camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 0.01, 20 );
+		this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.01, 20 );
 		
 		this.scene = new THREE.Scene();
         
@@ -142,13 +142,13 @@ class App{
         
         function onSessionEnd(){
             self.camera.remove( self.ui.mesh );
-            //document.body.style.display="";
+            document.body.style.display="";
         }
         
         this.renderer.xr.addEventListener( 'sessionstart', onSessionStart );
         this.renderer.xr.addEventListener( 'sessionend', onSessionEnd );
-        //document.body.appendChild(ARButton.createButton(this.renderer, { optionalFeatures: [ 'dom-overlay' ], domOverlay: { root: document.body } }));
-        document.body.appendChild(ARButton.createButton(this.renderer));
+        document.body.appendChild(ARButton.createButton(this.renderer, { optionalFeatures: [ 'dom-overlay' ], domOverlay: { root: document.body } }));
+        //document.body.appendChild(ARButton.createButton(this.renderer));
         
         this.gestures = new ControllerGestures( this.renderer );
         this.gestures.addEventListener( 'tap', (ev)=>{
