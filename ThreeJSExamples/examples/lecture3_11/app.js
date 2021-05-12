@@ -17,7 +17,7 @@ class App{
         
         this.clock = new THREE.Clock();
         
-		this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.01, 20 );
+		this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 20 );
 		
 		this.scene = new THREE.Scene();
         
@@ -115,6 +115,7 @@ class App{
         
         const config = {
             panelSize: { width: 0.6, height: 0.3 },
+            width: 512,
             height: 128,
             info:{ type: "text" }
         }
@@ -136,6 +137,7 @@ class App{
         function onSessionStart(){
             self.ui.mesh.position.set( 0, 0.3, -1.1 );
             self.camera.add( self.ui.mesh );
+            document.body.style.display="";
         }
         
         function onSessionEnd(){
