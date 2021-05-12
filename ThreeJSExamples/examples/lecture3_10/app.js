@@ -145,15 +145,15 @@ class App{
             if (self.added) {
             self.camera.remove( self.ui.mesh );
             self.added = false;
-            document.body.style.display="";
+            //document.body.style.display="";
             }
         }
         
         this.renderer.xr.addEventListener( 'sessionstart', onSessionStart );
         this.renderer.xr.addEventListener( 'sessionend', onSessionEnd );
 
-        document.body.appendChild(ARButton.createButton(this.renderer, { optionalFeatures: [ 'dom-overlay' ], domOverlay: { root: document.body } }));
-        //document.body.appendChild(ARButton.createButton(this.renderer));
+        //document.body.appendChild(ARButton.createButton(this.renderer, { optionalFeatures: [ 'dom-overlay' ], domOverlay: { root: document.body } }));
+        document.body.appendChild(ARButton.createButton(this.renderer));
         
         
         const controller = this.renderer.xr.getController( 0 );
