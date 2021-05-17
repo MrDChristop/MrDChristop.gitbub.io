@@ -177,6 +177,7 @@ class App{
             self.controls.target.set(0, 0, 0);
             self.controls.object.up.set(0, 1, 0);
             self.controls.update();
+            self.scene.background = new THREE.Color("#FF0000");
         }
         
         this.renderer.xr.addEventListener( 'sessionstart', onSessionStart );
