@@ -175,6 +175,7 @@ class App{
             self.tranformer.position.set(0,0,0);
             self.camera.position.set( 0, 0, -0.5 );
             self.controls.target.set(0, 0, 0);
+            self.controls.object.up.set(0, 1, 0);
             self.controls.update();
         }
         
