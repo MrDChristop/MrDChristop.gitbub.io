@@ -178,6 +178,7 @@ class App{
             self.controls.object.up.set(0, 1, 0);
             self.controls.update();
             self.scene.background = new THREE.Color("#FF0000");
+            self.renderer.domElement.style.display="";
         }
         
         this.renderer.xr.addEventListener( 'sessionstart', onSessionStart );
