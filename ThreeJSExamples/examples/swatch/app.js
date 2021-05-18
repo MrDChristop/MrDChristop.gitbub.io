@@ -43,7 +43,7 @@ class App{
         //light.position.set( 0.2, 1, 1);
         //this.scene.add(light);
         const canvas = document.querySelector('canvas.webgl')
-			
+        
 		this.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true } );
 		//this.renderer.setPixelRatio( window.devicePixelRatio );
 		this.renderer.setPixelRatio(1);
@@ -183,6 +183,13 @@ class App{
             self.controls.object.up.set(0, 1, 0);
             self.controls.update();
             self.renderer.domElement.style.display="";
+            
+            const canvas = document.querySelector('canvas.webgl')
+            if (canvas && canvas.parentNode) {
+            const parentcanvas = canvas.parentNode;
+            if (parentcanvas)
+                parentcanvas.classList.remove("arkit-device-wrapper");
+            }
 
             document.getElementById("netwMessages").value = document.body.innerHTML;
         }
