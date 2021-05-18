@@ -21,8 +21,8 @@ THREE.Box3.prototype.size = function () {
 
 class App{
 	constructor(){
-		const container = document.createElement( 'div' );
-		document.body.appendChild( container );
+		//const container = document.createElement( 'div' );
+		//document.body.appendChild( container );
         
         this.clock = new THREE.Clock();
         
@@ -42,12 +42,14 @@ class App{
         //const light = new THREE.DirectionalLight();
         //light.position.set( 0.2, 1, 1);
         //this.scene.add(light);
+        const canvas = document.querySelector('canvas.webgl')
 			
-		this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true } );
-		this.renderer.setPixelRatio( window.devicePixelRatio );
+		this.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true } );
+		//this.renderer.setPixelRatio( window.devicePixelRatio );
+		this.renderer.setPixelRatio(1);
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
 		this.renderer.outputEncoding = THREE.sRGBEncoding;
-		container.appendChild( this.renderer.domElement );
+		//container.appendChild( this.renderer.domElement );
         this.setEnvironment();
         
         this.workingVec3 = new THREE.Vector3();
@@ -64,7 +66,7 @@ class App{
 		
 		window.addEventListener('resize', this.resize.bind(this));
         
-        document.getElementById("netwMessages").value = document.body.innerHTML;
+        //document.getElementById("netwMessages").value = document.body.innerHTML;
 	}
     
     setEnvironment(){
@@ -178,10 +180,9 @@ class App{
             self.controls.target.set(0, 0, 0);
             self.controls.object.up.set(0, 1, 0);
             self.controls.update();
-            self.scene.background = new THREE.Color("#FF0000");
             self.renderer.domElement.style.display="";
 
-            document.getElementById("netwMessages").value = document.body.innerHTML;
+            //document.getElementById("netwMessages").value = document.body.innerHTML;
         }
         
         this.renderer.xr.addEventListener( 'sessionstart', onSessionStart );
