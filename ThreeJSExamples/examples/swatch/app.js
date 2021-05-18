@@ -57,13 +57,14 @@ class App{
         this.controls.update();
 
         this.stats = new Stats();
-        document.body.appendChild( this.stats.dom );
+        //document.body.appendChild( this.stats.dom );
 
         this.initScene();
         this.setupXR();
 		
 		window.addEventListener('resize', this.resize.bind(this));
         
+        document.getElementById("netwMessages").value = document.body.innerHTML;
 	}
     
     setEnvironment(){
@@ -179,6 +180,8 @@ class App{
             self.controls.update();
             self.scene.background = new THREE.Color("#FF0000");
             self.renderer.domElement.style.display="";
+
+            document.getElementById("netwMessages").value = document.body.innerHTML;
         }
         
         this.renderer.xr.addEventListener( 'sessionstart', onSessionStart );
