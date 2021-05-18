@@ -66,7 +66,8 @@ class App{
 		
 		window.addEventListener('resize', this.resize.bind(this));
         
-        document.getElementById("netwMessages").value = document.body.innerHTML;
+        //document.getElementById("netwMessages").value = document.body.innerHTML;
+        document.getElementById("netwMessages").value = this.renderer.domElement.outerHTML;
 	}
     
     setEnvironment(){
@@ -171,7 +172,8 @@ class App{
         function onSessionStart(){
             self.tranformer.visible = false;
 
-            document.getElementById("netwMessages").value = document.body.innerHTML;
+            //document.getElementById("netwMessages").value = document.body.innerHTML;
+            document.getElementById("netwMessages").value = self.renderer.domElement.outerHTML;
         }
        
         function onSessionEnd(){
@@ -184,14 +186,7 @@ class App{
             self.controls.update();
             self.renderer.domElement.style.display="";
             
-            const canvas = document.querySelector('canvas.webgl')
-            if (canvas && canvas.parentNode) {
-            const parentcanvas = canvas.parentNode;
-            if (parentcanvas)
-                parentcanvas.classList.remove("arkit-device-wrapper");
-            }
-
-            document.getElementById("netwMessages").value = document.body.innerHTML;
+            document.getElementById("netwMessages").value = self.renderer.domElement.outerHTML;
         }
         
         this.renderer.xr.addEventListener( 'sessionstart', onSessionStart );
