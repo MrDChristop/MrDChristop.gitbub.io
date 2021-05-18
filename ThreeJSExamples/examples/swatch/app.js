@@ -66,7 +66,7 @@ class App{
 		
 		window.addEventListener('resize', this.resize.bind(this));
         
-        //document.getElementById("netwMessages").value = document.body.innerHTML;
+        document.getElementById("netwMessages").value = document.body.innerHTML;
 	}
     
     setEnvironment(){
@@ -170,6 +170,8 @@ class App{
         
         function onSessionStart(){
             self.tranformer.visible = false;
+
+            document.getElementById("netwMessages").value = document.body.innerHTML;
         }
        
         function onSessionEnd(){
@@ -182,7 +184,7 @@ class App{
             self.controls.update();
             self.renderer.domElement.style.display="";
 
-            //document.getElementById("netwMessages").value = document.body.innerHTML;
+            document.getElementById("netwMessages").value = document.body.innerHTML;
         }
         
         this.renderer.xr.addEventListener( 'sessionstart', onSessionStart );
