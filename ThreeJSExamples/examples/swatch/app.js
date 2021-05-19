@@ -21,8 +21,8 @@ THREE.Box3.prototype.size = function () {
 
 class App{
 	constructor(){
-		//const container = document.createElement( 'div' );
-		//document.body.appendChild( container );
+		const container = document.createElement( 'div' );
+		document.body.appendChild( container );
         
         this.clock = new THREE.Clock();
         
@@ -31,9 +31,12 @@ class App{
 		this.assetsPath = '../assets/';
         
 		this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.01, 20 );
-		this.camera.position.set( 0, 0, -0.5 );
+        this.camera.position.set( 0, 0, -0.5 );
+        this.dummyCam = new THREE.Object3D();
+        this.camera.add( this.dummyCam );
         
-		this.scene = new THREE.Scene();
+        this.scene = new THREE.Scene();
+        //this.scene.add ( this.camera );
 
 		const ambient = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 0.1);
         ambient.position.set( 0.5, 1, 0.25 );
@@ -42,23 +45,23 @@ class App{
         //const light = new THREE.DirectionalLight();
         //light.position.set( 0.2, 1, 1);
         //this.scene.add(light);
-        const canvas = document.querySelector('canvas.webgl')
         
-		this.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true } );
+		this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true } );
 		//this.renderer.setPixelRatio( window.devicePixelRatio );
 		this.renderer.setPixelRatio(1);
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
 		this.renderer.outputEncoding = THREE.sRGBEncoding;
-		//container.appendChild( this.renderer.domElement );
+		container.appendChild( this.renderer.domElement );
         this.setEnvironment();
         
         this.workingVec3 = new THREE.Vector3();
+        this.cameraworkingVec3 = new THREE.Vector3();
         
         this.controls = new OrbitControls( this.camera, this.renderer.domElement );
         this.controls.target.set(0, 0, 0);
         this.controls.update();
 
-        this.stats = new Stats();
+        //this.stats = new Stats();
         //document.body.appendChild( this.stats.dom );
 
         this.initScene();
@@ -67,7 +70,7 @@ class App{
 		window.addEventListener('resize', this.resize.bind(this));
         
         //document.getElementById("netwMessages").value = document.body.innerHTML;
-        document.getElementById("netwMessages").value = this.renderer.domElement.outerHTML;
+        //document.getElementById("netwMessages").value = this.renderer.domElement.outerHTML;
 	}
     
     setEnvironment(){
@@ -173,7 +176,7 @@ class App{
             self.tranformer.visible = false;
 
             //document.getElementById("netwMessages").value = document.body.innerHTML;
-            document.getElementById("netwMessages").value = self.renderer.domElement.outerHTML;
+            //document.getElementById("netwMessages").value = self.renderer.domElement.outerHTML;
         }
        
         function onSessionEnd(){
@@ -184,9 +187,9 @@ class App{
             self.controls.target.set(0, 0, 0);
             self.controls.object.up.set(0, 1, 0);
             self.controls.update();
-            self.renderer.domElement.style.display="";
+            //self.renderer.domElement.style.display="";
             
-            document.getElementById("netwMessages").value = self.renderer.domElement.outerHTML;
+            //document.getElementById("netwMessages").value = self.renderer.domElement.outerHTML;
         }
         
         this.renderer.xr.addEventListener( 'sessionstart', onSessionStart );
@@ -206,6 +209,7 @@ class App{
                 self.tranformer.position.setFromMatrixPosition( self.reticle.matrix );
                 self.tranformer.translateY(-self.shoe.position.y);
                 self.tranformer.visible = true;
+                self.tranformer.getWorldPosition(self.workingVec3);
             }
         }
 
@@ -262,19 +266,30 @@ class App{
 
     }
 
+
+    createMsg( pos, rot, pos2){
+        let dist = pos.distanceTo(rot);
+        const msg = `camera:${pos.x.toFixed(3)},${pos.y.toFixed(3)},${pos.z.toFixed(3)} asset:${rot.x.toFixed(2)},${rot.y.toFixed(2)},${rot.z.toFixed(2)} distance:${dist} camera2:${pos2.x.toFixed(3)},${pos2.y.toFixed(3)},${pos2.z.toFixed(3)}`;
+        return msg;
+    }
+    
     render( timestamp, frame ) {
         const dt = this.clock.getDelta();
 
         const self = this;
 
-        this.stats.update();
+        //this.stats.update();
         
         if ( frame ) {
 
             if ( this.hitTestSourceRequested === false ) this.requestHitTestSource( )
 
             if ( this.hitTestSource ) this.getHitTestResults( frame );
+ 
+          
+            self.dummyCam.getWorldPosition(self.cameraworkingVec3);
 
+            document.getElementById("netwMessages").value = self.createMsg(self.cameraworkingVec3, self.workingVec3, self.camera.position);
         }
 
         this.renderer.render( this.scene, this.camera );
