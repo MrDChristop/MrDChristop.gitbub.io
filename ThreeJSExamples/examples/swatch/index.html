@@ -19,9 +19,28 @@
                 margin: 0;
                 padding: 0;
             }
+            html,
+            body
+            {
+                overflow: hidden;
+            }
+            .webgl
+            {
+                width:300px;
+                height:500px;   
+                padding: 0;
+                margin: auto;
+                display: block;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
         </style>
 	</head>
 	<body>
+        <canvas class="webgl"></canvas>
         <script type="module">
             import { App } from './app.js';
 
@@ -31,6 +50,8 @@
             });
         </script>
 
-<textarea id="netwMessages" rows="5" cols="60" style="width:90%;resize:none;float:right; font-size: 75%;margin-left:5px;position:fixed;top:0px;left:0px;"></textarea>
-	</body>
+    <textarea id="netwMessages" rows="5" cols="60" style="width:90%;resize:none;float:right; font-size: 75%;margin-left:5px;position:fixed;top:20px;left:0px;"></textarea>
+    <button id="resetBtn" style="position:fixed;bottom:20px;left:0px;">Click me</button> 
+    
+    </body>
 </html>
