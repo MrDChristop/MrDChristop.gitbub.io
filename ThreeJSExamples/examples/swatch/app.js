@@ -135,7 +135,7 @@ class App{
                 self.tranformer.rotation.set(0,THREE.MathUtils.degToRad(Math.round(currentRotation)),0);
             }
 
-            //document.getElementById("netwMessages").value = `x:${currentDeltaX} y:${currentDeltaY} rotation:${Math.round(currentRotation)}`;
+            document.getElementById("netwMessages").value = `x:${currentDeltaX} y:${currentDeltaY} rotation:${Math.round(currentRotation)}`;
         });
 
         mc.on("panend rotateend", function(e) {
