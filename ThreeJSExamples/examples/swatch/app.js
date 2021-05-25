@@ -10,6 +10,7 @@ import { LoadingBar } from '../LoadingBar.js';
 import { Player } from '../Player.js';
 
 
+
 // added because new syntax is terrible
 THREE.Box3.prototype.center = function () {
     return this.getCenter(new THREE.Vector3);
@@ -36,7 +37,7 @@ class App{
         
 		//this.camera = new THREE.PerspectiveCamera( 69, window.innerWidth / window.innerHeight, 0.01, 20 );
 		this.camera = new THREE.PerspectiveCamera( 49,  this.canvas.clientWidth /  this.canvas.clientHeight, 0.01, 20 );
-        this.camera.position.set( 0, 0, -0.5 );
+        this.camera.position.set( 0, 0, 0.5 );
         
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(1,0,0);
@@ -49,7 +50,7 @@ class App{
         //light.position.set( 0.2, 1, 1);
         //this.scene.add(light);
         
-		this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true } );
+		this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true, preserveDrawingBuffer: true } );
 		//this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true } );
 		//this.renderer.setPixelRatio( window.devicePixelRatio );
 		this.renderer.setPixelRatio(1);
@@ -62,12 +63,13 @@ class App{
         
         this.workingVec3 = new THREE.Vector3();
         this.assetToCamVec3 = new THREE.Vector3();
+        this.camWorldQuaternion = new THREE.Quaternion();
         this.camDirVec3 = new THREE.Vector3();
         
         //this.controls = new OrbitControls( this.camera, this.renderer.domElement );
-        this.controls = new OrbitControls( this.camera, this.canvas );
-        this.controls.target.set(0, 0, 0);
-        this.controls.update();
+        //this.controls = new OrbitControls( this.camera, this.canvas );
+        //this.controls.target.set(0, 0, 0);
+        //this.controls.update();
 
         //this.stats = new Stats();
         //document.body.appendChild( this.stats.dom );
@@ -78,11 +80,72 @@ class App{
 		window.addEventListener('resize', this.resize.bind(this));
         
         document.getElementById("resetBtn").addEventListener("click", ()=>{
-             this.controls.target.set(0, 0, 0);
-             this.controls.update();
+             //this.controls.target.set(0, 0, 0);
+             //this.controls.update();
+            // const screenshotTarget = document.body;
+
+            //html2canvas(screenshotTarget).then((canvas) => {
+            //     const base64image = canvas.toDataURL("image/png");
+             //    document.getElementById("photo").src = base64image;
+            //    });
+
         });
-        //document.getElementById("netwMessages").value = document.body.innerHTML;
-        //document.getElementById("netwMessages").value = this.renderer.domElement.outerHTML;
+
+        //https://codepen.io/munsocket/pen/dayZJg
+        let mc = new Hammer.Manager(this.canvas);
+        let pan = new Hammer.Pan();
+        let rotate = new Hammer.Rotate();
+
+        mc.add([pan, rotate]);
+       // mc.get('pinch').set({ enable: true });
+        mc.get('rotate').set({ enable: true });
+
+        this.adjustDeltaX = 0;
+        this.adjustDeltaY = 0;
+        this.adjustRotation = 0;
+
+        let currentDeltaX = null;
+        let currentDeltaY = null;
+        let currentRotation = null;
+
+        this.hammerUI = false;
+
+        const self = this;
+
+        mc.on("panstart rotatestart", function(e) {
+            if (!self.renderer.xr.isPresenting)
+                return;
+    
+            self.adjustRotation -= e.rotation;
+            self.hammerUI = true;
+        });
+
+        mc.on("panmove rotatemove", function(e) {
+            if (!self.renderer.xr.isPresenting)
+                return;
+
+            currentRotation = self.adjustRotation + e.rotation;
+            currentDeltaX = self.adjustDeltaX + e.deltaX;
+            currentDeltaY = self.adjustDeltaY + e.deltaY;
+
+            if (self.tranformer.visible)
+            {
+                self.tranformer.position.addVectors(self.tranformerLocalPos, new THREE.Vector3(currentDeltaX/1000, 0 ,currentDeltaY/1000));
+                self.tranformer.getWorldPosition(self.workingVec3);
+                self.tranformer.rotation.set(0,THREE.MathUtils.degToRad(Math.round(currentRotation)),0);
+            }
+
+            //document.getElementById("netwMessages").value = `x:${currentDeltaX} y:${currentDeltaY} rotation:${Math.round(currentRotation)}`;
+        });
+
+        mc.on("panend rotateend", function(e) {
+            if (!self.renderer.xr.isPresenting)
+                return;
+        
+            self.adjustRotation = currentRotation;
+            self.adjustDeltaX = currentDeltaX;
+            self.adjustDeltaY = currentDeltaY;
+        });
 	}
     
     setEnvironment(){
@@ -205,6 +268,9 @@ class App{
         function onSessionStart(){
             self.tranformer.visible = false;
             self.scene.background = null;
+            self.adjustDeltaX = 0;
+            self.adjustDeltaY = 0;
+            self.adjustRotation = 0;
             //document.getElementById("netwMessages").value = document.body.innerHTML;
             //document.getElementById("netwMessages").value = self.renderer.domElement.outerHTML;
         }
@@ -215,21 +281,16 @@ class App{
             self.tranformer.position.set(0,0,0);
             //self.camera.position.set( 0, 0, -0.5 );
             self.camera.position.copy(self.assetToCamVec3);
+            self.camera.quaternion.copy(self.camWorldQuaternion);
             //self.controls.target.set(0, 0, 0);
-            self.controls.target.copy(self.camDirVec3);
+            //self.controls.target.copy(self.camDirVec3);
             //self.controls.object.up.set(0, 1, 0);
-            self.controls.update();
+            //self.controls.update();
             //self.renderer.domElement.style.display="";
             self.scene.background = new THREE.Color(1,0,0);
             
             self.reticle.visible = false;
             self.sessionEndFlag = true;
-            
-            //self.camera.aspect = self.arAspect;//window.innerWidth / window.innerHeight;
-    	    //self.camera.updateProjectionMatrix();
-            //self.renderer.setSize( 500*self.arAspect, 500);//window.innerWidth, window.innerHeight );  
-            
-            //document.getElementById("netwMessages").value = self.renderer.domElement.outerHTML;
         }
         
         this.renderer.xr.addEventListener( 'sessionstart', onSessionStart );
@@ -244,16 +305,26 @@ class App{
         
         function onSelect() {
             if (self.shoe===undefined) return;
+
+            if (self.hammerUI) {
+                self.hammerUI = false;
+                return;
+            }
             
             if (self.reticle.visible){
                 self.tranformer.position.setFromMatrixPosition( self.reticle.matrix );
                 self.tranformer.translateY(-self.shoe.position.y);
                 self.tranformer.visible = true;
+                self.tranformerLocalPos = new THREE.Vector3().copy(self.tranformer.position);
                 self.tranformer.getWorldPosition(self.workingVec3);
 
                 //position the shoe as its positioned in swatch upon start facing the viewer
                 //compute angle between the positive X axis, and the point (x, y) to rotate around y only
                 self.rotateToFaceUser.rotation.y = Math.atan2( -( self.camera.position.x - self.workingVec3.x ), -( self.camera.position.z - self.workingVec3.z ) );
+
+                //hammerjs
+                self.adjustDeltaX = 0;
+                self.adjustDeltaY = 0;
             }
         }
 
@@ -321,6 +392,7 @@ class App{
         document.getElementById("netwMessages").value = `aspect:${cam.aspect} fov:${cam.fov} far/near:${cam.far} ${cam.near} gauge:${cam.filmGauge} zoom:${cam.zoom} ${window.innerWidth} ${window.innerHeight}`;
     }
     
+
     render( timestamp, frame ) {
         const dt = this.clock.getDelta();
 
@@ -335,11 +407,10 @@ class App{
             if (das) {
             let fovi = das.views[0].projectionMatrix[5];
             const fov = Math.atan2(1, fovi) * 2 * 180 / Math.PI;
-            console.log(fov);
+            //console.log(fov);
 
              self.arCameraObject = {aspect:window.innerWidth / window.innerHeight, fov:fov}
             }
-
 
             if ( this.hitTestSourceRequested === false ) this.requestHitTestSource( )
 
@@ -347,21 +418,13 @@ class App{
             
             self.assetToCamVec3.subVectors(self.camera.position, self.workingVec3);
             self.camera.getWorldDirection(self.camDirVec3);
+            self.camera.getWorldQuaternion(self.camWorldQuaternion);
 
- 
-            //document.getElementById("netwMessages").value = self.createMsg(self.camera.position, self.workingVec3);
-            self.createMsgCam(self.renderer.xr.getCamera(self.camera))
-            //var frame = new VRFrameData();
-            //navigator.getVRDisplays().then(function(displays) {
-            //    vrDisplay = displays[0];
-            //    console.log('Display found');	 
-            //    displays[0].getFrameData(frame);
-            //    const fov = Math.atan2(1, frame.leftProjectionMatrix[5]) * 2 * 180 / Math.PI;
-            //    console.log(fov);
-            //});
+            //document.getElementById("netwMessages").value = self.createMsg(self.camera.position, self.camera.rotation);
+            //self.createMsgCam(self.renderer.xr.getCamera(self.camera))
         }
-        else
-            self.createMsgCam(self.camera)
+        //else
+        //    self.createMsgCam(self.camera)
 
         this.renderer.render( this.scene, this.camera );
     }
