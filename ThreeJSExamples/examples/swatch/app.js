@@ -275,15 +275,12 @@ class App{
             self.adjustRotation = 0;
             self.mc.get('rotate').set({ enable: true });
             self.mc.get('pan').set({ enable: true });
-            document.body.style.display="";
-            self.canvas.style.display="";
             //document.getElementById("netwMessages").value = document.body.innerHTML;
             //document.getElementById("netwMessages").value = self.renderer.domElement.outerHTML;
         }
        
         function onSessionEnd(){
             document.body.style.display="";
-            self.canvas.style.display="";
             self.tranformer.visible = true;
             self.tranformer.position.set(0,0,0);
             //self.camera.position.set( 0, 0, -0.5 );
