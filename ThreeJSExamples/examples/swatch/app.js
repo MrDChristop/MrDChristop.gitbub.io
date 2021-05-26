@@ -52,8 +52,8 @@ class App{
         
 		this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true, preserveDrawingBuffer: true } );
 		//this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true } );
-		//this.renderer.setPixelRatio( window.devicePixelRatio );
-		this.renderer.setPixelRatio(1);
+		this.renderer.setPixelRatio( window.devicePixelRatio );
+		//this.renderer.setPixelRatio(1);
         //this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 		this.renderer.setSize( this.canvas.clientWidth, this.canvas.clientHeight);
 		//this.renderer.setSize( window.innerWidth, window.innerHeight );
@@ -93,13 +93,13 @@ class App{
 
         //https://codepen.io/munsocket/pen/dayZJg
         //let mc = new Hammer.Manager(this.canvas);
-        let mc = new Hammer.Manager(document.body);
+        this.mc = new Hammer.Manager(document.body);
         let pan = new Hammer.Pan();
         let rotate = new Hammer.Rotate();
 
-        mc.add([pan, rotate]);
-       // mc.get('pinch').set({ enable: true });
-        mc.get('rotate').set({ enable: true });
+        this.mc.add([pan, rotate]);
+        this.mc.get('rotate').set({ enable: false });
+        this.mc.get('pan').set({ enable: false });
 
         this.adjustDeltaX = 0;
         this.adjustDeltaY = 0;
@@ -113,7 +113,7 @@ class App{
 
         const self = this;
 
-        mc.on("panstart rotatestart", function(e) {
+        this.mc.on("panstart rotatestart", function(e) {
             if (!self.renderer.xr.isPresenting)
                 return;
     
@@ -121,7 +121,7 @@ class App{
             self.hammerUI = true;
         });
 
-        mc.on("panmove rotatemove", function(e) {
+        this.mc.on("panmove rotatemove", function(e) {
             if (!self.renderer.xr.isPresenting)
                 return;
 
@@ -139,7 +139,7 @@ class App{
             document.getElementById("netwMessages").value = `x:${currentDeltaX} y:${currentDeltaY} rotation:${Math.round(currentRotation)}`;
         });
 
-        mc.on("panend rotateend", function(e) {
+        this.mc.on("panend rotateend", function(e) {
             if (!self.renderer.xr.isPresenting)
                 return;
         
@@ -168,13 +168,14 @@ class App{
     }
 	
     resize(){ 
+        //resize is called twice on each ar switch, on the second swith to exit ar change camera to ar camera
         if (this.arCameraObject && this.sessionEndFlag) {
             this.camera.aspect = this.arCameraObject.aspect;
             this.camera.fov = this.arCameraObject.fov;
             this.camera.updateProjectionMatrix();
             this.renderer.setSize( this.canvas.clientHeight*this.arCameraObject.aspect, this.canvas.clientHeight);
             this.arCameraObject = null;
-            self.sessionEndFlag = true;
+            this.sessionEndFlag = false;
             return;
         }
 
@@ -272,6 +273,8 @@ class App{
             self.adjustDeltaX = 0;
             self.adjustDeltaY = 0;
             self.adjustRotation = 0;
+            self.mc.get('rotate').set({ enable: true });
+            self.mc.get('pan').set({ enable: true });
             //document.getElementById("netwMessages").value = document.body.innerHTML;
             //document.getElementById("netwMessages").value = self.renderer.domElement.outerHTML;
         }
@@ -292,6 +295,9 @@ class App{
             
             self.reticle.visible = false;
             self.sessionEndFlag = true;
+
+            self.mc.get('rotate').set({ enable: false });
+            self.mc.get('pan').set({ enable: false });
         }
         
         this.renderer.xr.addEventListener( 'sessionstart', onSessionStart );
