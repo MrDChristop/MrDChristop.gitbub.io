@@ -92,7 +92,8 @@ class App{
         });
 
         //https://codepen.io/munsocket/pen/dayZJg
-        let mc = new Hammer.Manager(this.canvas);
+        //let mc = new Hammer.Manager(this.canvas);
+        let mc = new Hammer.Manager(document.body);
         let pan = new Hammer.Pan();
         let rotate = new Hammer.Rotate();
 
