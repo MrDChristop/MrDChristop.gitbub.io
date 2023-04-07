@@ -1,5 +1,7 @@
 # ModelViewer-WebXR
 - [Trireme](/Trireme/index.html)
+- [Bull Delphi](/BullDelphi/index.html)
+- [Arcadian Statues Delphi](/ArcadianStatuesDelphi/index.html)
 
 # Learn-WebXR
 Resources for my Udemy course
