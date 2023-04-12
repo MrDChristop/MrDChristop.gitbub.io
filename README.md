@@ -2,6 +2,8 @@
 - [Trireme](/Trireme/index.html)
 - [Bull Delphi](/BullDelphi/index.html)
 - [Arcadian Statues Delphi](/ArcadianStatuesDelphi/index.html)
+- [Monopteros Miletus](/Delphinion_Monopteros/index.html)
+- [Altar Miletus](/Delphinion_Altar/index.html)
 
 # Learn-WebXR
 Resources for my Udemy course
