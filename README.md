@@ -4,6 +4,8 @@
 - [Arcadian Statues Delphi](/ArcadianStatuesDelphi/index.html)
 - [Monopteros Miletus](/Delphinion_Monopteros/index.html)
 - [Altar Miletus](/Delphinion_Altar/index.html)
+- [Olympia Fillipeion](/OlympiaPhillipion/index.html)
+- [Olympia Zanas](/OlympiaZanas/index.html)
 
 # Learn-WebXR
 Resources for my Udemy course
