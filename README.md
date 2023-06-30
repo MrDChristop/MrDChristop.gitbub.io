@@ -6,6 +6,7 @@
 - [Altar Miletus](/Delphinion_Altar/index.html)
 - [Olympia Fillipeion](/OlympiaPhillipion/index.html)
 - [Olympia Zanas](/OlympiaZanas/index.html)
+- [Joshua](/Joshua/index.html)
 
 # Learn-WebXR
 Resources for my Udemy course
