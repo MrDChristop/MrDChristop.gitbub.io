@@ -7,6 +7,7 @@
 - [Olympia Fillipeion](/OlympiaPhillipion/index.html)
 - [Olympia Zanas](/OlympiaZanas/index.html)
 - [Joshua](/Joshua/index.html)
+- [Deth](/Deth/index.html)
 
 # Learn-WebXR
 Resources for my Udemy course
